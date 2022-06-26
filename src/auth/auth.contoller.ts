@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus, HttpCode } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 import { UserDto } from './dto';
@@ -6,8 +6,9 @@ import { UserDto } from './dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('login')
-  login(@Body() dto: UserDto) {
-    return this.authService.login(dto);
+  @HttpCode(HttpStatus.OK)
+  @Post('user')
+  authUser(@Body() dto: UserDto) {
+    return this.authService.authenticate(dto);
   }
 }

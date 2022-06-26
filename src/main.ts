@@ -7,10 +7,8 @@ async function bootstrap() {
   app.enableCors();
 
   const config = new DocumentBuilder()
-    .setTitle('Itaú Devs - API Autenticação')
-    .setDescription(
-      'Parte 2 do Coding Challenge, feito por Guilherme de Araujo Gabriel ',
-    )
+    .setTitle('AuthAPI - MovieReview')
+    .setDescription('Authentication API done by Guilherme de Araujo Gabriel')
     .setVersion('1.0')
     .addTag('auth')
     .build();

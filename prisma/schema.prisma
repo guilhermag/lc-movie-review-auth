@@ -3,9 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -22,31 +21,34 @@ model User {
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  movie     Movie    @relation(references: [id], fields: [movieId])
-  likes     Int
-  dislikes  Int
-  movieId   Int
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    Int
+  movie       Movie    @relation(references: [id], fields: [movieId])
+  description String
+  likes       Int
+  dislikes    Int
+  movieId     Int
 
   @@map("comments")
 }
 
 model Review {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int      @unique
-  movie     Movie    @relation(references: [id], fields: [movieId])
-  movieId   Int
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  author     User     @relation(fields: [authorId], references: [id])
+  authorId   Int      @unique
+  movie      Movie    @relation(references: [id], fields: [movieId])
+  movieScore Int
+  movieId    Int
 
   @@map("reviews")
 }
 
 model Movie {
   id       Int       @id @default(autoincrement())
+  idIMDB   String    @unique
   name     String
   comments Comment[]
   reviews  Review[]
