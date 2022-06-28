@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
-import { UserDto } from './dto';
+import { AuthUserDto } from './dto';
 import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -21,14 +21,15 @@ export class AuthService {
     private config: ConfigService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
-  async authenticate(dto: UserDto) {
+  // Public methods visible for the controller
+  async authenticate(dto: AuthUserDto) {
     try {
       const cache =
         (await this.cacheManager.get('loginCache')) === undefined
           ? 0
           : await this.cacheManager.get('loginCache');
       if (cache >= 3) {
-        throw new UnauthorizedException(
+        throw new ForbiddenException(
           'Number of login attempts was exceeded, wait for 2 MINUTES',
         );
       }
@@ -39,14 +40,14 @@ export class AuthService {
       });
       if (!user) {
         this.verifyCacheLogin();
-        throw new ForbiddenException('Invalid credentials!');
+        throw new UnauthorizedException('Invalid credentials!');
       }
 
       const passwordMatches = await argon.verify(user.password, dto.password);
 
       if (!passwordMatches) {
         this.verifyCacheLogin();
-        throw new ForbiddenException('Invalid credentials!');
+        throw new UnauthorizedException('Invalid credentials!');
       }
 
       return this.signToken(user.id, user.email);
@@ -55,7 +56,8 @@ export class AuthService {
     }
   }
 
-  async signToken(
+  // Private methods visible only in the service
+  private async signToken(
     userId: number,
     email: string,
   ): Promise<{ access_token: string }> {
@@ -75,7 +77,7 @@ export class AuthService {
     };
   }
 
-  async verifyCacheLogin() {
+  private async verifyCacheLogin() {
     const cacheExists = await this.cacheManager.get('loginCache');
     if (!cacheExists) {
       await this.cacheManager.set('loginCache', 0);
