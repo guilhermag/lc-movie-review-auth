@@ -8,13 +8,11 @@
 
 [Portuguese README](./markdown/portuguese/README.md).
 
-Todo intro.
-
-- Todo list.
+The goal of this project was create an API for authenticate an user, save the login attempts in cache and if the credential are right just send a authentication token.
 
 ### Business rules and requirements
 
-Todo.
+With the goal of keeping this document clean, the business rules and requirements are detailed in the files above.
 
 - [Business rules.](./markdown/english/business-rules.md)
 - [Project requirements.](./markdown/english/project-requirements.md)
@@ -30,37 +28,27 @@ The technologies used on this project are:
 - [Prisma ORM.](https://www.prisma.io/docs/getting-started/quickstart)
 - [ProstgreSQL.](https://www.postgresql.org/)
 - [Docker.](https://www.docker.com/)
-- [OMDb API - The Open Movie Database](http://omdbapi.com/)
 
 ## Installation
 
 ### Pre installation
 
-To run this project you'll need [Docker.](https://www.docker.com/) and the [authentication api](https://github.com/guilhermag/lc-movie-review-auth) that is used to confirm the user sign in, so to the project work correctly in local is needed:
+To run this project you'll need [Docker.](https://www.docker.com/).
 
-- Auth API running on port: 3000(default).
-  - It's possible to change the default ports, just make sure to change in the project files.
-  - The installation of the Auth API is documented in the respective repository.
 - Docker running in background with the Postgres container, instructions ahead.
   - It's possible not use docker, just make sure to put the correct db link on the ```.env``` file.
 
-To create the postgres database with docker just clone the repository, go to the folder and run the ```docker-compose.yml``` file.
+The Auth API doesn't creates new data just read it, so you just need the connection link with the db.
 
 ### Project installation
 
 ```bash
 # clones the rep
-$ git clone https://github.com/guilhermag/lc-movie-review-api.git
-$ cd lc-movie-review-api/
-
-# creates the database
-$ npm run db:dev:up
+$ git clone https://github.com/guilhermag/lc-movie-review-auth.git
+$ cd lc-movie-review-auth/
 
 # installing all the dependencies
 $ npm install
-
-# script used to restart the db and run all the prisma migrations
-$ npm run db:dev:restart
 ```
 
 ## Project execution
@@ -75,14 +63,11 @@ DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
 
 # your jwt secret that must be the same on this app and in the authentication api
 JWT_SECRET="your-jwt-secret"
-
-# your api key to be able of make requests in the ombd api
-API_KEY_OMDB="your-api-key"
 ```
 
 In the root folder exists a file ```.env.example``` which serves as an example, it's possible to create a new ```.env``` or just rename the ```.env.example``` file, and fill with your environment variables.
 
-The project is set to run on port 3333, so all the endpoints are located in the ```http://localhost:3333/...```.
+The project is set to run on port 3000, so all the endpoints are located in the ```http://localhost:3333/...```.
 
 ### Running the app
 
@@ -96,7 +81,7 @@ $ npm run start:dev
 
 ### Documentation
 
-Swagger was used to document the API, so all the app information can be found on the [Swagger endpoint (/api-docs/)](http://localhost:3333/api-docs/).
+Swagger was used to document the API, so all the app information can be found on the [Swagger endpoint (/api-docs/)](http://localhost:3000/api-docs/).
 
 ## Test
 
@@ -107,7 +92,7 @@ For this app just end to end test were made, they can be accessed with the follo
 $ npm run test:e2e
 ```
 
-All the others scripts possibles te be used with ```npm run ...``` can be found in the ```packge.json```.
+All the others scripts possibles te be used with ```npm run ...``` can be found in the ```package.json```.
 
 ## Stay in touch
 

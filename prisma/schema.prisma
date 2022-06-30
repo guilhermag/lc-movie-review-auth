@@ -8,14 +8,15 @@ datasource db {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  email    String    @unique
-  name     String?
-  password String
-  score    Int
-  role     Role      @default(READER)
-  reviews  Review[]
-  comments Comment[]
+  id               Int       @id @default(autoincrement())
+  email            String    @unique
+  name             String?
+  password         String
+  score            Int
+  role             Role      @default(READER)
+  reviews          Review[]
+  comments         Comment[]
+  quotedCommentsId Int[]
 
   @@map("users")
 }
@@ -25,10 +26,12 @@ model Comment {
   createdAt   DateTime @default(now())
   author      User     @relation(fields: [authorId], references: [id])
   authorId    Int
-  movie       Movie    @relation(references: [id], fields: [movieId])
+  movie       Movie    @relation(fields: [movieId], references: [id])
   description String
   likes       Int
   dislikes    Int
+  replies     String[]
+  repeated    Boolean  @default(false)
   movieId     Int
 
   @@map("comments")
@@ -38,8 +41,8 @@ model Review {
   id         Int      @id @default(autoincrement())
   createdAt  DateTime @default(now())
   author     User     @relation(fields: [authorId], references: [id])
-  authorId   Int      @unique
-  movie      Movie    @relation(references: [id], fields: [movieId])
+  authorId   Int
+  movie      Movie    @relation(fields: [movieId], references: [id])
   movieScore Int
   movieId    Int
 
@@ -49,7 +52,13 @@ model Review {
 model Movie {
   id       Int       @id @default(autoincrement())
   idIMDB   String    @unique
-  name     String
+  title    String
+  year     Int
+  genre    String
+  director String
+  plot     String
+  language String
+  type     String
   comments Comment[]
   reviews  Review[]
 
