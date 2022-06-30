@@ -10,7 +10,6 @@ async function bootstrap() {
     .setTitle('AuthAPI - MovieReview')
     .setDescription('Authentication API done by Guilherme de Araujo Gabriel')
     .setVersion('1.0')
-    .addTag('auth')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
