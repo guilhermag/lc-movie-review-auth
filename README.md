@@ -1,38 +1,90 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+ <img src="./markdown/logo-project.png" alt="Project Logo" />
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Authentication API
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Introduction
 
-## Description
+[Portuguese README](./markdown/portuguese/README.md).
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Todo intro.
+
+- Todo list.
+
+### Business rules and requirements
+
+Todo.
+
+- [Business rules.](./markdown/english/business-rules.md)
+- [Project requirements.](./markdown/english/project-requirements.md)
+
+### Stacks
+
+The technologies used on this project are:
+
+- [NestJS framework.](https://nestjs.com/)
+  - [Typescript.](https://www.typescriptlang.org/)
+  - [Express.](https://expressjs.com/)
+  - Testing: [PactumJS.](https://pactumjs.github.io/) 
+- [Prisma ORM.](https://www.prisma.io/docs/getting-started/quickstart)
+- [ProstgreSQL.](https://www.postgresql.org/)
+- [Docker.](https://www.docker.com/)
+- [OMDb API - The Open Movie Database](http://omdbapi.com/)
 
 ## Installation
 
+### Pre installation
+
+To run this project you'll need [Docker.](https://www.docker.com/) and the [authentication api](https://github.com/guilhermag/lc-movie-review-auth) that is used to confirm the user sign in, so to the project work correctly in local is needed:
+
+- Auth API running on port: 3000(default).
+  - It's possible to change the default ports, just make sure to change in the project files.
+  - The installation of the Auth API is documented in the respective repository.
+- Docker running in background with the Postgres container, instructions ahead.
+  - It's possible not use docker, just make sure to put the correct db link on the ```.env``` file.
+
+To create the postgres database with docker just clone the repository, go to the folder and run the ```docker-compose.yml``` file.
+
+### Project installation
+
 ```bash
+# clones the rep
+$ git clone https://github.com/guilhermag/lc-movie-review-api.git
+$ cd lc-movie-review-api/
+
+# creates the database
+$ npm run db:dev:up
+
+# installing all the dependencies
 $ npm install
+
+# script used to restart the db and run all the prisma migrations
+$ npm run db:dev:restart
 ```
 
-## Running the app
+## Project execution
+
+### Pre configuration
+
+To run this app is needed to config the environment variables in the ```.env``` file:
+
+```bash
+# your database url for connection
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
+
+# your jwt secret that must be the same on this app and in the authentication api
+JWT_SECRET="your-jwt-secret"
+
+# your api key to be able of make requests in the ombd api
+API_KEY_OMDB="your-api-key"
+```
+
+In the root folder exists a file ```.env.example``` which serves as an example, it's possible to create a new ```.env``` or just rename the ```.env.example``` file, and fill with your environment variables.
+
+The project is set to run on port 3333, so all the endpoints are located in the ```http://localhost:3333/...```.
+
+### Running the app
 
 ```bash
 # development
@@ -40,34 +92,26 @@ $ npm run start
 
 # watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
+
+### Documentation
+
+Swagger was used to document the API, so all the app information can be found on the [Swagger endpoint (/api-docs/)](http://localhost:3333/api-docs/).
 
 ## Test
 
-```bash
-# unit tests
-$ npm run test
+For this app just end to end test were made, they can be accessed with the following commands.
 
+```bash
 # e2e tests
 $ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+All the others scripts possibles te be used with ```npm run ...``` can be found in the ```packge.json```.
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- Author - Guilherme de Araujo Gabriel
+- Email - [guilhermag@gmail.com](guilhermag@gmail.com)
+- Github - [@guilhermag](https://github.com/guilhermag)
+- LinkedIn - [Guilherme Gabriel](https://www.linkedin.com/in/guilherme-gabriel-22961610a/)
